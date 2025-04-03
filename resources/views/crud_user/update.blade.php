@@ -1,48 +1,230 @@
-@extends('dashboard')
+<!DOCTYPE html>
+<html lang="en">
 
-@section('content')
-    <main class="signup-form">
-        <div class="cotainer">
-            <div class="row justify-content-center">
-                <div class="col-md-4">
-                    <div class="card">
-                        <h3 class="card-header text-center">Update User</h3>
-                        <div class="card-body">
-                            <form action="{{ route('user.postUpdateUser') }}" method="POST">
-                                @csrf
-                                <input name="id" type="hidden" value="{{$user->id}}">
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Name" id="name" class="form-control" name="name"
-                                           value="{{ $user->name }}"
-                                           required autofocus>
-                                    @if ($errors->has('name'))
-                                        <span class="text-danger">{{ $errors->first('name') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="text" placeholder="Email" id="email_address" class="form-control"
-                                           value="{{ $user->email }}"
-                                           name="email" required autofocus>
-                                    @if ($errors->has('email'))
-                                        <span class="text-danger">{{ $errors->first('email') }}</span>
-                                    @endif
-                                </div>
-                                <div class="form-group mb-3">
-                                    <input type="password" placeholder="Password" id="password" class="form-control"
-                                           name="password" required>
-                                    @if ($errors->has('password'))
-                                        <span class="text-danger">{{ $errors->first('password') }}</span>
-                                    @endif
-                                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./css/styles.css">
+    <title>Login</title>
+</head>
+<style>
+    body {
+        position: relative;
+        font-family: Arial, sans-serif;
+        background-color: #f4f4f4;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+    }
 
-                                <div class="d-grid mx-auto">
-                                    <button type="submit" class="btn btn-dark btn-block">Update</button>
-                                </div>
-                            </form>
-                        </div>
-                    </div>
-                </div>
+    .container {
+        background-color: white;
+        padding: 20px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        width: 400px;
+    }
+
+    .dsuser {
+        text-align: center;
+        margin-bottom: 20px;
+        position: absolute;
+        top: 100px;
+        left: 45%;
+    }
+
+    h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    input[type="text"],
+    input[type="password"],
+    input[type="email"] {
+        width: 90%;
+        padding: 10px;
+        margin: 10px 0;
+        border: 1px solid #ccc;
+        border-radius: 4px;
+    }
+
+    label[for="password"] {
+        margin-right: 5px;
+    }
+
+    label[for="email"] {
+        margin-right: 33px;
+    }
+
+    input[type="checkbox"] {
+        margin-left: 76px;
+    }
+
+    input[type="repassword"] {
+        margin-left: 7px;
+        width: 55%;
+        padding: 10px;
+        border-radius: 4px;
+    }
+
+    input[type="email"] {
+        margin-left: 5px;
+    }
+
+    button {
+        width: 100px;
+        padding: 10px;
+        background-color: #007bff;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+
+    a {
+        text-decoration-line: none;
+        margin-right: 10px;
+        margin-left: 35%;
+        color: #000;
+    }
+
+    .a {
+        margin-top: 40px;
+    }
+
+    button:hover {
+        background-color: #0056b3;
+    }
+
+    footer {
+        text-align: center;
+        margin-top: 20px;
+        font-size: 12px;
+    }
+
+    nav {
+        position: absolute;
+        top: 0;
+        border: 2px solid #000;
+        width: 98%;
+        height: 5%;
+        justify-content: center;
+        display: flex;
+    }
+
+    ul {
+        list-style-type: none;
+        margin: 10px;
+        padding: 0;
+        display: flex
+    }
+
+    li {
+        display: flex;
+        white-space: nowrap;
+        margin: 0 5px;
+    }
+
+    footer {
+        position: absolute;
+        bottom: 0;
+        border: 2px solid #000;
+        width: 98%;
+        height: 5%;
+    }
+
+    table,
+    td {
+        border: 1px solid #000;
+        text-align: left;
+    }
+
+    th {
+        text-align: center;
+    }
+
+    table {
+        border-collapse: collapse;
+        width: 90%;
+        position: absolute;
+        top: 22%;
+    }
+
+    /* th,
+td {
+    padding: 15px;
+} */
+    .cot1 {
+        width: 25px;
+    }
+
+    .cot4 {
+        width: 230px;
+    }
+
+    .b {
+        margin-left: 200px;
+    }
+
+    .c,
+    .d {
+        display: flex;
+        align-items: center;
+        margin-bottom: 15px;
+    }
+
+    .c p,
+    .d p {
+        position: absolute;
+        left: 45%;
+    }
+</style>
+
+<body>
+    <nav>
+        <ul>
+            <li><a href="#home">Home</a></li>
+            <li><a href="{{ route('login') }}">Đăng nhập</a></li>
+            <li><a href="{{ route('user.createUser') }}">Đăng ký</a></li>
+        </ul>
+    </nav>
+    <div class="container">
+        <h2>Màn hình cập nhật</h2>
+        <form action="{{ route('user.postUpdateUser') }}" method="POST">
+            @csrf
+            <input name="id" type="hidden" value="{{$user->id}}">
+            <div>
+                <input type="text" placeholder="Name" id="name" class="form-control" name="name"
+                    value="{{ $user->name }}" required autofocus>
             </div>
-        </div>
-    </main>
-@endsection
+            <div>
+                <input type="text" placeholder="Email" id="email_address" class="form-control"
+                    value="{{ $user->email }}" name="email" required autofocus>
+                @if ($errors->has('email'))
+                    <span class="text-danger">{{ $errors->first('email') }}</span>
+                @endif
+            </div>
+            <div>
+                <input type="password" placeholder="Password" id="password" class="form-control" name="password"
+                    required>
+                @if ($errors->has('password'))
+                    <span class="text-danger">{{ $errors->first('password') }}</span>
+                @endif
+            </div>
+            <div>
+                <input type="password" placeholder="confirm password" required>
+            </div>
+            <div class="a">
+                <a href="{{ route('login') }}" style="color: rgb(62, 141, 184);">Đã có tài khoản</a>
+                <button type="submit">Cập nhật</button>
+            </div>
+
+        </form>
+    </div>
+    <footer>
+        <p>Minh Nhưt @04/2024</p>
+    </footer>
+</body>
+
+</html>
