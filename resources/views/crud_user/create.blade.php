@@ -226,7 +226,7 @@ td {
         </form>
     </div>
     <footer>
-        <p>Minh Nhưt @04/2024</p>
+        <p>Minh Nhựt @04/2024</p>
     </footer>
     <script>
         const password = document.getElementById('password');

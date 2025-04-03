@@ -213,7 +213,9 @@ td {
                 @endif
             </div>
             <div>
-                <input type="password" placeholder="confirm password" required>
+                <input type="password" placeholder="Confirm Password" id="confirm-password" name="confirm-password"
+                    required>
+                <span id="password-error" class="text-danger"></span>
             </div>
             <div class="a">
                 <a href="{{ route('login') }}" style="color: rgb(62, 141, 184);">Đã có tài khoản</a>
@@ -225,6 +227,23 @@ td {
     <footer>
         <p>Minh Nhưt @04/2024</p>
     </footer>
+    <script>
+        const password = document.getElementById('password');
+        const confirmPassword = document.getElementById('confirm-password');
+        const errorMessage = document.getElementById('password-error');
+
+        function validatePassword() {
+            if (password.value === confirmPassword.value) {
+                errorMessage.textContent = '';
+                confirmPassword.setCustomValidity('');
+            } else {
+                errorMessage.textContent = 'Mật khẩu không khớp';
+                confirmPassword.setCustomValidity('Mật khẩu không khớp');
+            }
+        }
+        password.addEventListener('input', validatePassword);
+        confirmPassword.addEventListener('input', validatePassword);
+    </script>
 </body>
 
 </html>
