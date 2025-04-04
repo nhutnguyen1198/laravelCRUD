@@ -207,6 +207,20 @@ td {
                 @endif
             </div>
             <div>
+                <input type="text" placeholder="like" id="like" class="form-control" name="like" required
+                    autofocus>
+                @if ($errors->has('like'))
+                    <span class="text-danger">{{ $errors->first('like') }}</span>
+                @endif
+            </div>
+            <div>
+                <input type="text" placeholder="github" id="github" class="form-control" name="github" required
+                    autofocus>
+                @if ($errors->has('github'))
+                    <span class="text-danger">{{ $errors->first('github') }}</span>
+                @endif
+            </div>
+            <div>
                 <input type="password" placeholder="Password" id="password" class="form-control" name="password"
                     required>
                 @if ($errors->has('password'))

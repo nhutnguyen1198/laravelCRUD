@@ -195,6 +195,8 @@ td {
             <th>ID</th>
             <th>Name</th>
             <th>Email</th>
+            <th>like</th>
+            <th>github</th>
             <th class="cot4">Thao tác</th>
         </tr>
         @foreach($users as $user)
@@ -202,6 +204,8 @@ td {
                 <td>{{ $user->id }}</td>
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
+                <td>{{ $user->like }}</td>
+                <td>{{ $user->github }}</td>
                 <td>
                     <ul>
                         <li><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit |</a></li>
