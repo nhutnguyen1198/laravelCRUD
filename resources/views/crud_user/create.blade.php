@@ -191,8 +191,18 @@ td {
     </nav>
     <div class="container">
         <h2>Màn hình đăng ký</h2>
-        <form action="{{ route('user.postUser') }}" method="POST">
+        <form action="{{ route('user.postUser') }}" method="POST" enctype="multipart/form-data">
             @csrf
+            <!-- <div>
+                <label for="avatar">Avatar</label>
+                <input type="file" id="avatar" class="form-control" name="avatar" accept="image/*"
+                    onchange="previewAvatar(event)">
+                <img id="avatar-preview" src="#" alt="Avatar Preview"
+                    style="display: none; margin-top: 10px; max-width: 100px; max-height: 100px; border: 1px solid #ccc;">
+                @if ($errors->has('avatar'))
+                    <span class="text-danger">{{ $errors->first('avatar') }}</span>
+                @endif
+            </div> -->
             <div>
                 <input type="text" placeholder="Name" id="name" class="form-control" name="name" required autofocus>
                 @if ($errors->has('name'))
@@ -206,9 +216,8 @@ td {
                     <span class="text-danger">{{ $errors->first('email') }}</span>
                 @endif
             </div>
-            <div>
-                <input type="text" placeholder="like" id="like" class="form-control" name="like" required
-                    autofocus>
+            <!-- <div>
+                <input type="text" placeholder="like" id="like" class="form-control" name="like" required autofocus>
                 @if ($errors->has('like'))
                     <span class="text-danger">{{ $errors->first('like') }}</span>
                 @endif
@@ -219,7 +228,7 @@ td {
                 @if ($errors->has('github'))
                     <span class="text-danger">{{ $errors->first('github') }}</span>
                 @endif
-            </div>
+            </div> -->
             <div>
                 <input type="password" placeholder="Password" id="password" class="form-control" name="password"
                     required>
@@ -249,15 +258,32 @@ td {
 
         function validatePassword() {
             if (password.value === confirmPassword.value) {
-                errorMessage.textContent = ''; 
-                confirmPassword.setCustomValidity(''); 
+                errorMessage.textContent = '';
+                confirmPassword.setCustomValidity('');
             } else {
-                errorMessage.textContent = 'Mật khẩu không khớp'; 
-                confirmPassword.setCustomValidity('Mật khẩu không khớp'); 
+                errorMessage.textContent = 'Mật khẩu không khớp';
+                confirmPassword.setCustomValidity('Mật khẩu không khớp');
             }
         }
         password.addEventListener('input', validatePassword);
         confirmPassword.addEventListener('input', validatePassword);
+
+        function previewAvatar(event) {
+            const avatarPreview = document.getElementById('avatar-preview');
+            const file = event.target.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarPreview.src = e.target.result;
+                    avatarPreview.style.display = 'block';
+                };
+                reader.readAsDataURL(file);
+            } else {
+                avatarPreview.src = '#';
+                avatarPreview.style.display = 'none';
+            }
+        }
     </script>
 </body>
 

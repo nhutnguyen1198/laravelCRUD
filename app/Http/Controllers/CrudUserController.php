@@ -7,6 +7,7 @@ use Session;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 /**
  * CRUD User controller
@@ -56,17 +57,25 @@ class CrudUserController extends Controller
     public function postUser(Request $request)
     {
         $request->validate([
+            'avatar' => 'nullable|image|max:2048',
             'name' => 'required',
             'email' => 'required|email|unique:users',
             'password' => 'required|min:6',
         ]);
 
         $data = $request->all();
+        $avatarPath = null;
+        if ($request->hasFile('avatar')) {
+            $file = $request->file('avatar');
+            dd($file->getMimeType(), $file->getClientOriginalName());
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+        }
         $check = User::create([
+            // 'avatar' => $avatarPath,
             'name' => $data['name'],
             'email' => $data['email'],
-            'like' => $data['like'],
-            'github' => $data['github'],
+            // 'like' => $data['like'],
+            // 'github' => $data['github'],
             'password' => Hash::make($data['password'])
         ]);
 
@@ -76,7 +85,8 @@ class CrudUserController extends Controller
     /**
      * View user detail page
      */
-    public function readUser(Request $request) {
+    public function readUser(Request $request)
+    {
         $user_id = $request->get('id');
         $user = User::find($user_id);
 
@@ -86,7 +96,8 @@ class CrudUserController extends Controller
     /**
      * Delete user by id
      */
-    public function deleteUser(Request $request) {
+    public function deleteUser(Request $request)
+    {
         $user_id = $request->get('id');
         $user = User::destroy($user_id);
 
@@ -112,20 +123,29 @@ class CrudUserController extends Controller
         $input = $request->all();
 
         $request->validate([
+            'avatar' => 'nullable|image|max:2048',
             'name' => 'required',
-            'email' => 'required|email|unique:users,id,'.$input['id'],
+            'email' => 'required|email|unique:users,id,' . $input['id'],
             'password' => 'required|min:6',
         ]);
 
-       $user = User::find($input['id']);
-       $user->name = $input['name'];
-       $user->email = $input['email'];
-       $user->like = $input['like'];
-       $user->github = $input['github'];
-       $user->password = $input['password'];
-       $user->save();
+        $user = User::find($input['id']);
+        if ($request->hasFile('avatar')) {
+            // Delete old avatar if exists
+            if ($user->avatar && Storage::disk('public')->exists($user->avatar)) {
+                Storage::disk('public')->delete($user->avatar);
+            }
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
+        }
+        $user->name = $input['name'];
+        $user->email = $input['email'];
+        $user->like = $input['like'];
+        $user->github = $input['github'];
+        $user->password = Hash::make($input['password']);
+        $user->save();
 
-        return redirect("list")->withSuccess('You have signed-in');
+        return redirect()->route('user.readUser', ['id' => $user->id])->with('success', 'User updated successfully!');
     }
 
     /**
@@ -133,8 +153,8 @@ class CrudUserController extends Controller
      */
     public function listUser()
     {
-        if(Auth::check()){
-            $users = User::all();
+        if (Auth::check()) {
+            $users = User::with('roles')->get();
             return view('crud_user.list', ['users' => $users]);
         }
 
@@ -144,10 +164,19 @@ class CrudUserController extends Controller
     /**
      * Sign out
      */
-    public function signOut() {
+    public function signOut()
+    {
         Session::flush();
         Auth::logout();
 
         return Redirect('login');
     }
+    public function displayUserAvatar($user)
+    {
+        echo '<img src="' . ($user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png')) . '" alt="Avatar">';
+    }
 }
+
+/**
+ * Display user avatar
+ */

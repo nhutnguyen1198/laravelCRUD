@@ -193,19 +193,32 @@ td {
     <table>
         <tr>
             <th>ID</th>
+            <!-- <th>Avatar</th> -->
             <th>Name</th>
             <th>Email</th>
-            <th>like</th>
-            <th>github</th>
+            <th>Role</th>
+            <!-- <th>like</th>
+            <th>github</th> -->
             <th class="cot4">Thao tác</th>
         </tr>
         @foreach($users as $user)
             <tr>
                 <td>{{ $user->id }}</td>
+                <!-- <td>
+                        <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}"
+                            alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">    
+                    </td> -->
                 <td>{{ $user->name }}</td>
                 <td>{{ $user->email }}</td>
-                <td>{{ $user->like }}</td>
-                <td>{{ $user->github }}</td>
+                <td>
+                    @foreach($user->roles as $role)
+                        <a href="{{ route('user.role', ['id' => $role->id]) }}">
+                            {{ $role->name . '-' }}
+                        </a>
+                    @endforeach
+                </td>
+                <!-- <td>{{ $user->like }}</td>
+                    <td>{{ $user->github }}</td> -->
                 <td>
                     <ul>
                         <li><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit |</a></li>

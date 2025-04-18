@@ -194,17 +194,30 @@ td {
     </nav>
     <div class="container">
         <h2>Màn hình Chi tiết</h2>
-            <div class="c"><label for="">Username</label>
-                <p>{{$messi->name}}</p>
-            </div>
-            <div class="d">
-                <label for="">Email</label>
-                <p>{{$messi->email}}</p>
-            </div>
+        <div class="d">
+            <label for="">Avatar</label>
+            <img src="{{ $messi->avatar ? asset('storage/' . $messi->avatar) : asset('images/default-avatar.png') }}"
+                alt="Avatar" style="width: 100px; height: 100px; border-radius: 50%; margin-left: 70px;">
+        </div>
+        <div class="c"><label for="">Username</label>
+            <p>{{$messi->name}}</p>
+        </div>
+        <div class="d">
+            <label for="">Email</label>
+            <p>{{$messi->email}}</p>
+        </div>
+        <div class="d">
+            <label for="">like</label>
+            <p>{{$messi->like}}</p>
+        </div>
+        <div class="d">
+            <label for="">github</label>
+            <p>{{$messi->github}}</p>
+        </div>
 
-            <div class="b">
-                <button><a href="{{ route('user.updateUser', ['id' => $messi->id]) }}" class="ed">chỉnh sửa</a></button>
-            </div>
+        <div class="b">
+            <button><a href="{{ route('user.updateUser', ['id' => $messi->id]) }}" class="ed">chỉnh sửa</a></button>
+        </div>
     </div>
     <footer>
         <p>Minh Nhựt @04/2025</p>

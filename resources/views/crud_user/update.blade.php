@@ -191,9 +191,20 @@ td {
     </nav>
     <div class="container">
         <h2>Màn hình cập nhật</h2>
-        <form action="{{ route('user.postUpdateUser') }}" method="POST">
+        <form action="{{ route('user.postUpdateUser') }}" method="POST" enctype="multipart/form-data">
             @csrf
             <input name="id" type="hidden" value="{{$user->id}}">
+            <div>
+                <label for="avatar">Avatar</label>
+                <input type="file" id="avatar" class="form-control" name="avatar" accept="image/*"
+                    onchange="previewAvatar(event)">
+                <img id="avatar-preview"
+                    src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}"
+                    alt="Avatar Preview" style="width: 100px; height: 100px; border-radius: 50%; margin-top: 10px;">
+                @if ($errors->has('avatar'))
+                    <span class="text-danger">{{ $errors->first('avatar') }}</span>
+                @endif
+            </div>
             <div>
                 <input type="text" placeholder="Name" id="name" class="form-control" name="name"
                     value="{{ $user->name }}" required autofocus>
@@ -206,15 +217,15 @@ td {
                 @endif
             </div>
             <div>
-                <input type="text" placeholder="like" id="like" class="form-control"
-                    value="{{ $user->like }}" name="like" required autofocus>
+                <input type="text" placeholder="like" id="like" class="form-control" value="{{ $user->like }}"
+                    name="like" required autofocus>
                 @if ($errors->has('like'))
                     <span class="text-danger">{{ $errors->first('like') }}</span>
                 @endif
             </div>
             <div>
-                <input type="text" placeholder="github" id="github" class="form-control"
-                    value="{{ $user->github }}" name="github" required autofocus>
+                <input type="text" placeholder="github" id="github" class="form-control" value="{{ $user->github }}"
+                    name="github" required autofocus>
                 @if ($errors->has('github'))
                     <span class="text-danger">{{ $errors->first('github') }}</span>
                 @endif
@@ -257,6 +268,26 @@ td {
         }
         password.addEventListener('input', validatePassword);
         confirmPassword.addEventListener('input', validatePassword);
+        function previewAvatar(event) {
+            const avatarPreview = document.getElementById('avatar-preview');
+            const file = event.target.files[0];
+
+            if (file) {
+                // Check if the file is an image
+                if (!file.type.startsWith('image/')) {
+                    alert('Please select a valid image file.');
+                    event.target.value = ''; // Clear the input
+                    avatarPreview.src = "{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}";
+                    return;
+                }
+
+                const reader = new FileReader();
+                reader.onload = function (e) {
+                    avatarPreview.src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        }
     </script>
 </body>
 
