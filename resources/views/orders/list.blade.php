@@ -187,55 +187,26 @@ td {
             <li><a href="{{ route('login') }}">Đăng xuất</a></li>
         </ul>
     </nav>
-    <div class="">
-        <h2 class="dsuser">Danh sách user</h2>
-    </div>
     <table>
-        <tr>
-            <th>ID</th>
-            <!-- <th>Avatar</th> -->
-            <th>Name</th>
-            <th>Email</th>
-            <th>Order</th>
-            <th>Role</th>
-            <!-- <th>like</th>
-            <th>github</th> -->
-            <th class="cot4">Thao tác</th>
-        </tr>
-        @foreach($users as $user)
+        <thead>
             <tr>
-                <td>{{ $user->id }}</td>
-                <!-- <td>
-                                    <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('images/default-avatar.png') }}"
-                                        alt="Avatar" style="width: 50px; height: 50px; border-radius: 50%;">    
-                                </td> -->
-                <td>{{ $user->name }}</td>
-                <td>{{ $user->email }}</td>
-                <td>
-                    @foreach($user->orders as $order)
-                        <a href="{{ route('orders.list', ['id' => $order->id]) }}">
-                            {{ $order->id }}
-                        </a><br>
-                    @endforeach
-                </td>
-                <td>
-                    @foreach($user->roles as $role)
-                        <a href="{{ route('user.role', ['id' => $role->id]) }}">
-                            {{ $role->name . '-' }}
-                        </a>
-                    @endforeach
-                </td>
-                <!-- <td>{{ $user->like }}</td>
-                                <td>{{ $user->github }}</td> -->
-                <td>
-                    <ul>
-                        <li><a href="{{ route('user.updateUser', ['id' => $user->id]) }}">Edit |</a></li>
-                        <li><a href="{{ route('user.readUser', ['id' => $user->id]) }}">View |</a></li>
-                        <li><a href="{{ route('user.deleteUser', ['id' => $user->id]) }}">Delete</a></li>
-                    </ul>
-                </td>
+                <th>ID</th>
+                <th>ID Người Dùng</th>
+                <th>sản phẩm</th>
+                <th>Ngày tạo</th>
             </tr>
-        @endforeach
+        </thead>
+        <tbody>
+            @foreach ($orders as $order)
+
+                <tr>
+                    <td>{{ $order->id }}</td>
+                    <td>{{ $order->user_id }}</td>
+                    <td>{{ $products->name }}</td>   
+                    <td>{{ $order->created_at }}</td>
+                </tr>
+            @endforeach
+        </tbody>
     </table>
     <footer>
         <p>Minh Nhựt @04/2025</p>
