@@ -13,10 +13,10 @@ class OrderController extends Controller
     {
         $order_id = $request->get('id');
         $orders = Order::find($order_id);
-    
+        
         $data = [
             'orders' => $orders,
-            'products' => $orders->product,
+            'products' => $orders->products
         ];
     
         return view('orders.list', $data);

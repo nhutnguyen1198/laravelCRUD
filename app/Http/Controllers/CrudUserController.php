@@ -154,7 +154,7 @@ class CrudUserController extends Controller
     public function listUser()
     {
         if (Auth::check()) {
-            $users = User::all();       
+            $users = User::paginate(5);       
             return view('crud_user.list', ['users' => $users]);
         }
 

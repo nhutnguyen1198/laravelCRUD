@@ -2,22 +2,21 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
+use App\Models\Product;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
-class RoleSeeder extends Seeder
+class ProductsSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::factory(10)->create();
         //
-        for ($i = 0; $i < 5; $i++) {
-            Role::factory()->create([
-                'name' => 'Role' . $i,
+        for ($i = 0; $i < 10; $i++) {
+            Product::factory()->create([
+                'name' => 'Product' . $i,
             ]);
         }
     }

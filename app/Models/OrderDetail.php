@@ -13,7 +13,7 @@ class OrderDetail extends Model
     public $incrementing = true;
 
     protected $fillable = [
-        'user_id',
+        'order_id',
         'product_id',
     ];
 }

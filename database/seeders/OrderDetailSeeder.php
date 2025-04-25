@@ -2,22 +2,22 @@
 
 namespace Database\Seeders;
 
-use App\Models\Role;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
+use App\Models\OrderDetail;
 
-class RoleSeeder extends Seeder
+class OrderDetailSeeder extends Seeder
 {
     /**
      * Run the database seeds.
      */
     public function run(): void
     {
-        Role::factory(10)->create();
         //
-        for ($i = 0; $i < 5; $i++) {
-            Role::factory()->create([
-                'name' => 'Role' . $i,
+        for ($i = 0; $i < 10; $i++) {
+            OrderDetail::factory()->create([
+                'order_id' => rand(1, 10),
+                'product_id' => rand(1, 10),
             ]);
         }
     }
